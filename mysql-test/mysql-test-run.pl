@@ -968,6 +968,7 @@ sub run_test_server ($$$) {
           mtr_report("***Warnings generated in error logs during shutdown ".
                      "after running tests: $test_list\n\n$report");
           $test_failure= 1;
+          @$completed[-1]->{warnings}= $report;
           if ( !$opt_force ) {
             # Test failure due to warnings, force is off
             return ("Warnings in log", 1, $completed, $extra_warnings);

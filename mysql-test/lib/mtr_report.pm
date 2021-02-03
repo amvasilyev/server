@@ -514,6 +514,9 @@ sub mtr_report_stats ($$$$) {
       # if a test case has to be retried it should have the result MTR_RES_FAILED in jUnit XML
       if ($test->{'result'} eq "MTR_RES_FAILED" || $test->{'retries'} > 0) {
         my $logcontents = $test->{'logfile-failed'} || $test->{'logfile'};
+        if ($test->{'warnings'}){
+          $logcontents.= "\n".$test->{'warnings'};
+        }
         # remove any double ] that would end the cdata
         $logcontents =~ s/]]/\x{fffd}/g;
         # replace wide characters that aren't allowed in XML 1.0
