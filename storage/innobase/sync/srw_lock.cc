@@ -208,7 +208,7 @@ void ssux_lock_low::write_lock(bool holding_u)
     if (write_lock_wait_try(l))
       return;
 
-    if (!(l & WRITER_WAITING))
+    while (!(l & WRITER_WAITING))
     {
       switch (l) {
       case UNLOCKED:
@@ -222,8 +222,8 @@ void ssux_lock_low::write_lock(bool holding_u)
       }
       l= write_lock_wait_start() | WRITER_WAITING;
     }
-    else
-      DBUG_ASSERT(~WRITER_WAITING & l);
+
+    DBUG_ASSERT(~WRITER_WAITING & l);
 
     writer_wait(l);
   }
