@@ -505,8 +505,14 @@ sub mtr_report_stats ($$$$) {
       } else {
         $test_result = $test->{'result'};
       }
+      my $combinations;
+      if (defined($test->{combinations})){
+        $combinations = join ',', @{$test->{combinations}};
+      } else {
+        $combinations = "";
+      }
 
-      $xml_report .= qq(\t\t<testcase assertions="" classname="$current_suite" name="$test->{'name'}" status="$test_result" time="$test_time");
+      $xml_report .= qq(\t\t<testcase assertions="" classname="$current_suite" name="$test->{'name'}" status="$test_result" time="$test_time" combinations="$combinations");
 
       my $comment = $test->{'comment'};
       $comment =~ s/[\"]//g;
