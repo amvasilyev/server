@@ -925,6 +925,17 @@ SET(CMAKE_EXTRA_INCLUDE_FILES)
 CHECK_STRUCT_HAS_MEMBER("struct dirent" d_ino "dirent.h"  STRUCT_DIRENT_HAS_D_INO)
 CHECK_STRUCT_HAS_MEMBER("struct dirent" d_namlen "dirent.h"  STRUCT_DIRENT_HAS_D_NAMLEN)
 SET(SPRINTF_RETURNS_INT 1)
+
+#
+# _XOPEN_SOURCE needs to be defined to avoid deprecation error
+# (see CONC-521) in ucontext.h on macos systems. This error was
+# preventing HAVE_UCONTEXT_H from being defined, thus nonblock API
+# was disabled in C/C, thus mysqltest wasn't able to execute connect() calls
+# and tests were failing
+#
+IF(APPLE)
+  SET(CMAKE_REQUIRED_DEFINITIONS -D_XOPEN_SOURCE=600)
+ENDIF()
 CHECK_INCLUDE_FILE(ucontext.h HAVE_FILE_UCONTEXT_H)
 IF(NOT HAVE_FILE_UCONTEXT_H)
   CHECK_INCLUDE_FILE(sys/ucontext.h HAVE_FILE_UCONTEXT_H)
