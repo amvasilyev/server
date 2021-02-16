@@ -516,6 +516,8 @@ sub mtr_report_stats ($$$$) {
 
       my $comment = $test->{'comment'};
       $comment =~ s/[\"]//g;
+      $comment =~ s/</&lt;/g;
+      $comment =~ s/>/&gt;/g;
 
       # if a test case has to be retried it should have the result MTR_RES_FAILED in jUnit XML
       if ($test->{'result'} eq "MTR_RES_FAILED" || $test->{'retries'} > 0) {
