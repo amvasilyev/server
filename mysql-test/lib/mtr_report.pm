@@ -512,10 +512,14 @@ sub mtr_report_stats ($$$$) {
         $combinations = "";
       }
 
-      $xml_report .= qq(\t\t<testcase assertions="" classname="$current_suite" name="$test->{'name'}" status="$test_result" time="$test_time" combinations="$combinations");
+      $xml_report .= qq(\t\t<testcase assertions="" classname="$current_suite" name="$test->{'name'}" ).
+                     qq(status="$test_result" time="$test_time" combinations="$combinations");
 
       my $comment = $test->{'comment'};
       $comment =~ s/[\"]//g;
+      $comment =~ s/&/&#38;/g;
+      $comment =~ s/'/&#39;/g;
+      $comment =~ s/"/&#34;/g;
       $comment =~ s/</&lt;/g;
       $comment =~ s/>/&gt;/g;
 
